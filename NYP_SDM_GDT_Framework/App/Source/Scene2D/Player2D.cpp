@@ -183,12 +183,12 @@ bool CPlayer2D::Update(const double dElapsedTime)
 
 	// Get keyboard updates
 	// Left-right movement
-	if ((cKeyboardController->IsKeyDown(GLFW_KEY_LEFT)) &&
-		(cKeyboardController->IsKeyDown(GLFW_KEY_RIGHT)))
+	if ((cKeyboardController->IsKeyDown(GLFW_KEY_A)) &&
+		(cKeyboardController->IsKeyDown(GLFW_KEY_D)))
 	{
 		vec2MovementVelocity.x = 0.0f;
 	}
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_LEFT))
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 	{
 		vec2MovementVelocity.x -= vec2WalkSpeed.x;
 		if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::IDLE)
@@ -197,7 +197,7 @@ bool CPlayer2D::Update(const double dElapsedTime)
 			animatedSprites->PlayAnimation("left", -1, 1.0f);
 		}
 	}
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_RIGHT))
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
 	{
 		vec2MovementVelocity.x += vec2WalkSpeed.x;
 		if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::IDLE)
@@ -209,18 +209,18 @@ bool CPlayer2D::Update(const double dElapsedTime)
 
 	// Up-down movement with up & down key
 	/*
-	if ((cKeyboardController->IsKeyDown(GLFW_KEY_UP)) &&
-		(cKeyboardController->IsKeyDown(GLFW_KEY_DOWN)))
+	if ((cKeyboardController->IsKeyDown(GLFW_KEY_W)) &&
+		(cKeyboardController->IsKeyDown(GLFW_KEY_S)))
 	{
 		vec2MovementVelocity.y = 0.0f;
 	}
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_UP))
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
 		vec2MovementVelocity.y += vec2WalkSpeed.y;
 		if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::IDLE)
 			cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::WALK);
 	}
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_DOWN))
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S))
 	{
 		vec2MovementVelocity.y -= vec2WalkSpeed.y;
 		if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::IDLE)
@@ -464,6 +464,10 @@ void CPlayer2D::InteractWithMap(void)
 	default:
 		break;
 	}
+}
+
+void CPlayer2D::InteractWithEnemy(void)
+{
 }
 
 /**

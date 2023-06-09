@@ -32,6 +32,8 @@ class CMap2D;
 // Include Physics2D
 #include "Physics2D.h"
 
+//Include Enemy2D
+
 // Include AnimatedSprites
 #include "Primitives/SpriteAnimation.h"
 
@@ -111,6 +113,8 @@ protected:
 
 	// Let player interact with the map
 	void InteractWithMap(void);
+
+	void InteractWithEnemy(void);
 
 	// Update the health and lives
 	void UpdateHealthLives(void);

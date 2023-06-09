@@ -145,7 +145,7 @@ bool CEnemy2D::Update(const double dElapsedTime)
 		}
 		iFSMCounter++;
 		break;
-	case PATROL:
+	case PATROL: //if player is on same tile level and in range(simulating enemy spots player) -> enemy switch to attack
 		if (iFSMCounter > iMaxFSMCounter)
 		{
 			sCurrentFSM = IDLE;
@@ -154,8 +154,11 @@ bool CEnemy2D::Update(const double dElapsedTime)
 		}
 		else if (glm::distance(vec2Position, cPlayer2D->vec2Position) <= glm::length(vec2HalfSize) * 10.0f) //checking distance between player and enemy
 		{
- 			sCurrentFSM = ATTACK;
-			iFSMCounter = 0;
+			if (cPlayer2D->vec2Position.y == vec2Position.y || cPlayer2D->vec2Position.y == vec2Position.y + 1)//checking if player is on same tile level -> planning to make jump only 1 tile high
+			{
+ 				sCurrentFSM = ATTACK;
+				iFSMCounter = 0;
+			}
 		}
 		else
 		{
@@ -237,6 +240,7 @@ bool CEnemy2D::Update(const double dElapsedTime)
 		break;
 	}
 
+	//dont delete yet, might need fall physics code
 	// Calculate the physics for JUMP/DOUBLE JUMP/FALL movement
 	if ((cPhysics2D.GetVerticalStatus() >= CPhysics2D::VERTICALSTATUS::JUMP)
 		&& (cPhysics2D.GetVerticalStatus() <= CPhysics2D::VERTICALSTATUS::FALL))
@@ -429,11 +433,17 @@ void CEnemy2D::PrintSelf(void)
  */
 bool CEnemy2D::InteractWithPlayer(void)
 {
-	// Check if the enemy2D is within 1 tile size of the player2D
-	if (glm::distance(vec2Position, cPlayer2D->vec2Position) <= glm::length(vec2HalfSize) * 2.0f)
+	// when enemy reaches player position -> knock player back + take 2 wedge dmg
+	if (glm::distance(vec2Position, cPlayer2D->vec2Position) <= glm::length(vec2HalfSize) * 1.0f)
 	{
 		cout << "Gotcha!" << endl;
+		if (vec2Direction.x < 0)
+			cPlayer2D->vec2Position.x -= 4 * vec2HalfSize.x; //this is knockback effect -> figure how to push back by 2 tiles -> multiply enemy direction to knockback in enemy's direction
 		// Since the player has been caught, then reset the FSM
+		else if (vec2Direction.x > 0)
+		{
+			cPlayer2D->vec2Position.x += 4 * vec2HalfSize.x;
+		}
 		sCurrentFSM = IDLE;
 		iFSMCounter = 0;
 		return true;

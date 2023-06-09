@@ -73,7 +73,8 @@ protected:
 	{
 		IDLE = 0,
 		PATROL = 1,
-		ATTACK = 2,
+		AGGRO = 2,
+		ATTACK = 3,
 		NUM_FSM
 	};
 	
