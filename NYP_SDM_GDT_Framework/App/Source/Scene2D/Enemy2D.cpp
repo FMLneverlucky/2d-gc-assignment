@@ -264,7 +264,7 @@ bool CEnemy2D::Update(const double dElapsedTime)
 	// Update vec2Position
 	glm::vec2 vec2NewPosition = vec2Position + vec2MovementVelocity * (float)dElapsedTime;
 
-	// Check for collision with the Tile Maps vertically
+	// Check for collision with the Tile Maps horizontally
 	if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::WALK)
 	{
 		// Check if the player walks into an obstacle
@@ -433,17 +433,15 @@ void CEnemy2D::PrintSelf(void)
  */
 bool CEnemy2D::InteractWithPlayer(void)
 {
-	// when enemy reaches player position -> knock player back + take 2 wedge dmg
 	if (glm::distance(vec2Position, cPlayer2D->vec2Position) <= glm::length(vec2HalfSize) * 1.0f)
 	{
 		cout << "Gotcha!" << endl;
-		if (vec2Direction.x < 0)
-			cPlayer2D->vec2Position.x -= 4 * vec2HalfSize.x; //this is knockback effect -> figure how to push back by 2 tiles -> multiply enemy direction to knockback in enemy's direction
 		// Since the player has been caught, then reset the FSM
-		else if (vec2Direction.x > 0)
-		{
-			cPlayer2D->vec2Position.x += 4 * vec2HalfSize.x;
-		}
+		if (vec2Direction.x < 0)
+			cPlayer2D->cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::KNOCKBACK_TO_LEFT);
+		if (vec2Direction.x > 0)
+			cPlayer2D->cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::KNOCKBACK_TO_RIGHT);
+
 		sCurrentFSM = IDLE;
 		iFSMCounter = 0;
 		return true;

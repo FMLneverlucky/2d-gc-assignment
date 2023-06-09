@@ -29,6 +29,8 @@ public:
 	int GetCount(void) const;
 	// Get the maximum number of items from this class instance
 	int GetMaxCount(void) const;
+	//set maximum number of items
+	void setMaxCount(int num);
 
 	// Get the texture ID
 	unsigned int GetTextureID(void) const;

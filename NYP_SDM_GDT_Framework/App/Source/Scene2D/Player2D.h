@@ -66,10 +66,16 @@ public:
 	// PostRender
 	void PostRender(void);
 
+
+	// Physics
+	CPhysics2D cPhysics2D;
+
+
 protected:
 	const glm::vec2 vec2JumpSpeed = glm::vec2(0.0f, 250.0f);
 	const glm::vec2 vec2WalkSpeed = glm::vec2(100.0f, 100.0f);
 	const glm::vec2 vec2RunSpeed = glm::vec2(200.0f, 100.0f);
+	const float knockback_speed = 150.f;
 
 	const glm::vec2 vec2HalfSize = glm::vec2(12.5f, 12.5f);
 	glm::vec2 vec2MovementVelocity;
@@ -82,8 +88,6 @@ protected:
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 
-	// Physics
-	CPhysics2D cPhysics2D;
 
 	//CS: Animated Sprite
 	CSpriteAnimation* animatedSprites;
@@ -104,17 +108,26 @@ protected:
 
 	// Destructor
 	virtual ~CPlayer2D(void);
-
+	
 	// Check if the player is in mid-air
 	//bool IsMidAir(void);
 
 	//// Update Jump or Fall
 	//void UpdateJumpFall(const double dElapsedTime = 0.0166666666666667);
 
+	//player knockback destination
+	glm::vec2 knockback_destination;
+
 	// Let player interact with the map
 	void InteractWithMap(void);
 
+	void LightToWedge(void);
+
+	void Recharge(const double dt);
+
 	void InteractWithEnemy(void);
+
+	bool InteractKey(void);
 
 	// Update the health and lives
 	void UpdateHealthLives(void);

@@ -230,7 +230,7 @@ bool CPlayer2D::Update(const double dElapsedTime)
 
 	//setting inventory item to get tree info to toss into jump condition checking -> tree used as jumping powerup in practical
 	//Change this item to wedges
-	cInventoryItem = cInventoryManager->GetItem("Tree");
+	cInventoryItem = cInventoryManager->GetItem("Lives");
 
 	// Jump movement
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE)) //jumping only allowed when at least 1 tree is collected
@@ -283,13 +283,13 @@ bool CPlayer2D::Update(const double dElapsedTime)
 	glm::vec2 vec2NewPosition = vec2Position + vec2MovementVelocity * (float)dElapsedTime;
 
 	// Check for collision with the Tile Maps vertically
-	if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::WALK)
+	if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::WALK || cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::KNOCKBACK_TO_LEFT || cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::KNOCKBACK_TO_RIGHT)
 	{
 		//cout << "Check horizontal movement" << endl;
 		// Check if the player walks into an obstacle
 		if (cMap2D->CheckHorizontalCollision(vec2Position, vec2HalfSize, vec2NewPosition) == CSettings::RESULTS::POSITIVE)
 		{
-			//cout << "Horizontal collision!" << endl;
+			cout << "Horizontal collision!" << endl;
 			cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::IDLE);
 		}
 
@@ -354,8 +354,15 @@ bool CPlayer2D::Update(const double dElapsedTime)
 	// Interact with the Map
 	InteractWithMap();
 
+	//interact with enemy
+	InteractWithEnemy();
+
 	// Update the Health and Lives
 	UpdateHealthLives();
+
+	Recharge(dElapsedTime);
+
+	LightToWedge();
 
 	//CS: Update the animated sprite
 	animatedSprites->Update(dElapsedTime);
@@ -450,12 +457,18 @@ void CPlayer2D::InteractWithMap(void)
 	case 20:
 		// Decrease the health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
+		cInventoryItem->Remove(2);
 		break;
 	case 21:
 		// Increase the health
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Add(1);
+		break;
+	case 22:	//lighting candles
+		if (InteractKey())
+		{
+			cMap2D->SetMapInfo(iPositionY, iPositionX, 23);
+		}
 		break;
 	case 99:
 		// Level has been completed
@@ -466,12 +479,107 @@ void CPlayer2D::InteractWithMap(void)
 	}
 }
 
+/*
+	method to get wedges(now lives) for double jump
+	->player run around collecting lights(now trees)
+	->when light(now tree) reaches max count, max count increases by 5
+*/
+void CPlayer2D::LightToWedge(void)
+{
+	cInventoryItem = cInventoryManager->GetItem("Tree");
+	if (cInventoryItem->GetCount() == cInventoryItem->GetMaxCount())
+	{
+		//every time max number of tree achieved, add 5 to max count
+		cInventoryItem->setMaxCount(cInventoryItem->GetCount() + 5);
+		//everytime max count increases, add 1 life
+		cInventoryItem = cInventoryManager->GetItem("Lives");
+		cInventoryItem->Add(1);
+	}
+}
+
+/*
+	bit that adjusts rate of light level recharge
+*/
+void CPlayer2D::Recharge(const double dt)
+{
+	//copy pasted bit ekekek
+	int iPositionX = 0;
+	int iPositionY = 0;
+	if (cMap2D->GetTileIndexAtPosition(vec2Position, iPositionX, iPositionY) == false)
+		return;
+
+	switch (cMap2D->GetMapInfo(iPositionY, iPositionX))
+	{
+	case 21:	//standing at a lamp -> recharge rate: medium
+	{
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		if (cInventoryItem->GetCount() < cInventoryItem->GetMaxCount())
+		{
+			cInventoryItem->Add(2);
+		}
+		break;
+	}
+	case 23:	//standing at candle -> recharge rate: low
+	{
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		if (cInventoryItem->GetCount() < cInventoryItem->GetMaxCount())
+		{
+			cInventoryItem->Add(1);
+		}
+		break;
+
+	}
+	default:
+		break;
+	}
+
+}
+/*
+	when enemy charge at player and reach player pos 
+	->player play rolling animation
+	->player is knocked back
+	->player lose 2 lives
+	cant work as intended
+*/
 void CPlayer2D::InteractWithEnemy(void)
 {
+	// when enemy reaches player position -> knock player back + take 2 wedge dmg
+	//this is knockback effect -> 3 tiles
+	if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::KNOCKBACK_TO_LEFT) //enemy facing left
+	{
+		knockback_destination.x = vec2Position.x - (6 * vec2HalfSize.x);
+		vec2MovementVelocity.x -= knockback_speed;
+		if (vec2Position.x < knockback_destination.x)
+			cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::IDLE);
+	}
+	else if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::KNOCKBACK_TO_RIGHT) // enemy facing right
+	{
+		knockback_destination.x = vec2Position.x + (6 * vec2HalfSize.x);
+		vec2MovementVelocity.x += knockback_speed;
+		if (vec2Position.x > knockback_destination.x)
+			cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::IDLE);
+
+	}
+
+}
+
+/*
+	am extremely lazy to find and copy paste
+	so i made this
+	note to self: probably toss in ui that it is interactable when player stands at interactable id
+*/
+bool CPlayer2D::InteractKey(void)
+{
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
+		return true;
+	return false;
 }
 
 /**
  @brief Update the health and lives.
+ will be used as light level
+ each wedge(life now) has a bar of light level
+ when light level is not 100%, player can stand at light source to regen light level
  */
 void CPlayer2D::UpdateHealthLives(void)
 {

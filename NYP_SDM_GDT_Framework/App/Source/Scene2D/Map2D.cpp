@@ -144,6 +144,32 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(101, iTextureID));
 	}
 
+	//candle texture[unlit] (default tile now)
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_DefaultTile.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Scene2D_DefaultTile.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(22, iTextureID));
+	}
+
+	//candle texture[lit] (chest now)
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_TreasureChestTile.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Scene2D_TreasureChestTile.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(23, iTextureID));
+	}
+
 	// Load the tree texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_TreeTile.tga", true);
 	if (iTextureID == 0)
