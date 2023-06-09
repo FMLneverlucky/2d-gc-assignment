@@ -124,7 +124,7 @@ bool CPlayer2D::Init(void)
 	// Get the handler to the CInventoryManager instance
 	cInventoryManager = CInventoryManager::GetInstance();
 	// Add a Lives icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 0);
+	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	// Add a Health icon as one of the inventory items
@@ -249,6 +249,7 @@ bool CPlayer2D::Update(const double dElapsedTime)
 			cPhysics2D.SetInitialVelocity(vec2JumpSpeed);
 			cPhysics2D.SetNewJump(true);
 			cInventoryItem->Remove(1);
+			fully_charged = false;
 		}
 	}
 
@@ -282,14 +283,14 @@ bool CPlayer2D::Update(const double dElapsedTime)
 	// Update vec2Position
 	glm::vec2 vec2NewPosition = vec2Position + vec2MovementVelocity * (float)dElapsedTime;
 
-	// Check for collision with the Tile Maps vertically
+	// Check for collision with the Tile Maps horizontally
 	if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::WALK || cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::KNOCKBACK_TO_LEFT || cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::KNOCKBACK_TO_RIGHT)
 	{
 		//cout << "Check horizontal movement" << endl;
 		// Check if the player walks into an obstacle
 		if (cMap2D->CheckHorizontalCollision(vec2Position, vec2HalfSize, vec2NewPosition) == CSettings::RESULTS::POSITIVE)
 		{
-			cout << "Horizontal collision!" << endl;
+			//cout << "Horizontal collision!" << endl;
 			cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::IDLE);
 		}
 
@@ -360,9 +361,9 @@ bool CPlayer2D::Update(const double dElapsedTime)
 	// Update the Health and Lives
 	UpdateHealthLives();
 
-	Recharge(dElapsedTime);
+	LightToWedge(); //update new wedge count first
 
-	LightToWedge();
+	Recharge(dElapsedTime);
 
 	//CS: Update the animated sprite
 	animatedSprites->Update(dElapsedTime);
@@ -463,6 +464,8 @@ void CPlayer2D::InteractWithMap(void)
 		// Increase the health
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Add(1);
+		if (fully_charged)
+			fully_charged = false;
 		break;
 	case 22:	//lighting candles
 		if (InteractKey())
@@ -489,11 +492,21 @@ void CPlayer2D::LightToWedge(void)
 	cInventoryItem = cInventoryManager->GetItem("Tree");
 	if (cInventoryItem->GetCount() == cInventoryItem->GetMaxCount())
 	{
-		//every time max number of tree achieved, add 5 to max count
-		cInventoryItem->setMaxCount(cInventoryItem->GetCount() + 5);
+		//player starts with no wedge at start -> after first wedge, player needs 5 lights to gain 1 wedge
+		if (cInventoryItem->GetCount() == 1)
+		{
+			cInventoryItem->setMaxCount(5);
+		}
+		else
+		{
+			//every time max number of tree achieved, add 5 to max count
+			cInventoryItem->setMaxCount(cInventoryItem->GetCount() + 5);
+		}
 		//everytime max count increases, add 1 life
 		cInventoryItem = cInventoryManager->GetItem("Lives");
+		cInventoryItem->setMaxCount(cInventoryItem->GetCount() + 1);
 		cInventoryItem->Add(1);
+
 	}
 }
 
@@ -508,29 +521,39 @@ void CPlayer2D::Recharge(const double dt)
 	if (cMap2D->GetTileIndexAtPosition(vec2Position, iPositionX, iPositionY) == false)
 		return;
 
+	cInventoryItem = cInventoryManager->GetItem("Health");
+
 	switch (cMap2D->GetMapInfo(iPositionY, iPositionX))
 	{
 	case 21:	//standing at a lamp -> recharge rate: medium
 	{
-		cInventoryItem = cInventoryManager->GetItem("Health");
 		if (cInventoryItem->GetCount() < cInventoryItem->GetMaxCount())
-		{
 			cInventoryItem->Add(2);
-		}
 		break;
 	}
 	case 23:	//standing at candle -> recharge rate: low
 	{
-		cInventoryItem = cInventoryManager->GetItem("Health");
 		if (cInventoryItem->GetCount() < cInventoryItem->GetMaxCount())
-		{
 			cInventoryItem->Add(1);
-		}
 		break;
 
 	}
 	default:
 		break;
+	}
+
+	//when item is still light (health), check if bar is fully filled before adding a wedge(life)
+	if (cInventoryItem->GetCount() == cInventoryItem->GetMaxCount())
+	{
+		cInventoryItem = cInventoryManager->GetItem("Lives");
+		//check if all wedge is available/charged -> will not run scope if all wedge available
+		if (cInventoryItem->GetCount() != cInventoryItem->GetMaxCount())
+		{
+			cInventoryItem->Add(1);
+			fully_charged = true; //wedges all available
+		}
+		else
+			cInventoryItem->Remove(100); //not all wedges fully charged -> recharging light bar from 0
 	}
 
 }

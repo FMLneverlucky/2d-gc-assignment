@@ -118,6 +118,9 @@ protected:
 	//player knockback destination
 	glm::vec2 knockback_destination;
 
+	//player starts with no charge
+	bool fully_charged = false;
+
 	// Let player interact with the map
 	void InteractWithMap(void);
 

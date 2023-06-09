@@ -81,7 +81,7 @@ bool CGUI_Scene2D::Init(void)
 	// Initialise the cInventoryManager
 	cInventoryManager = CInventoryManager::GetInstance();
 	// Add a Tree as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Tree", "Image/Scene2D_TreeTile.tga", 5, 0);
+	cInventoryItem = cInventoryManager->Add("Tree", "Image/Scene2D_TreeTile.tga", 1, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	return true;
