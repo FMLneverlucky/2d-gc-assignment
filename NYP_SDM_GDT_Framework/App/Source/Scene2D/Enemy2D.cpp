@@ -428,6 +428,10 @@ void CEnemy2D::PrintSelf(void)
 	cPhysics2D.PrintSelf();
 }
 
+void CEnemy2D::self_reposition()
+{
+}
+
 /**
  @brief Let enemy2D interact with the player.
  */

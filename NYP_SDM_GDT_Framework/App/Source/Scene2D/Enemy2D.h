@@ -62,6 +62,9 @@ public:
 	// PrintSelf
 	void PrintSelf(void);
 
+	//aggro state update
+	virtual void self_reposition() = 0; //overriding thing
+
 protected:
 	enum DIRECTION
 	{
