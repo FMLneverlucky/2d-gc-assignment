@@ -26,6 +26,9 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
+//extension of enemy aggro state
+#include "EnemyAggro.h"
+
 class CEnemy2D : public CEntity2D
 {
 public:
