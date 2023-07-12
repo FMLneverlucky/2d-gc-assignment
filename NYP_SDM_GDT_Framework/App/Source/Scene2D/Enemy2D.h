@@ -44,6 +44,9 @@ public:
 	// Update
 	bool Update(const double dElapsedTime);
 
+	//EXPERIMENTAL VIRTUAL FACTORY UPDATE
+	virtual void upate(const double) = 0;
+
 	// PreRender
 	void PreRender(void);
 

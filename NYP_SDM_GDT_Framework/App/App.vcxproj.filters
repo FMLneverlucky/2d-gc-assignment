@@ -230,6 +230,9 @@
     <ClCompile Include="EnemyAggro.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="enemyPatrol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -407,6 +410,9 @@
       <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="EnemyAggro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyPatrol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

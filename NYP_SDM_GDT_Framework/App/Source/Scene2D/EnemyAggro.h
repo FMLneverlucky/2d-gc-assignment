@@ -20,5 +20,6 @@ protected:
     CPlayer2D* player;
 
     //since this class is sub class of enemy, can have direct access to enemy
+    EnemyAggro* aggroState;
 };
 

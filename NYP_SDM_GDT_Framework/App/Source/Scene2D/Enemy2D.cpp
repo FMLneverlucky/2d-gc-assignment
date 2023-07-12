@@ -130,6 +130,8 @@ bool CEnemy2D::Update(const double dElapsedTime)
 
 	// Reset vec2MovementVelocity
 	vec2MovementVelocity = glm::vec2(0.0f);
+	//FROM THIS PART ON IS ORIGINAL AI CODE - DO NOT REMOVE BECAUSE FUCKING AROUND
+	/*
 	// Set the physics horizontal status to idle
 	cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::IDLE);
 
@@ -239,7 +241,7 @@ bool CEnemy2D::Update(const double dElapsedTime)
 	default:
 		break;
 	}
-
+	*/
 	//dont delete yet, might need fall physics code
 	// Calculate the physics for JUMP/DOUBLE JUMP/FALL movement
 	if ((cPhysics2D.GetVerticalStatus() >= CPhysics2D::VERTICALSTATUS::JUMP)
