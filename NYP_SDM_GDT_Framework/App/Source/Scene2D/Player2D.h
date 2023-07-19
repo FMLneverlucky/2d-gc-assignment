@@ -118,15 +118,14 @@ protected:
 	//player knockback destination
 	glm::vec2 knockback_destination;
 
-	//player starts with no charge
-	bool fully_charged = false;
+	bool fullyCharged;
 
 	// Let player interact with the map
 	void InteractWithMap(void);
 
 	void LightToWedge(void);
 
-	void Recharge(const double dt);
+	void Recharge();
 
 	void InteractWithEnemy(void);
 

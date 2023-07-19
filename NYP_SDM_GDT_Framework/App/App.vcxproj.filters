@@ -227,12 +227,6 @@
     <ClCompile Include="Source\Scene2D\Enemy2DManager.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyAggro.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="enemyPatrol.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">

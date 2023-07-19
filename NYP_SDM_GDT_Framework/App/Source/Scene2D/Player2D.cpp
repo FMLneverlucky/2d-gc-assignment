@@ -31,6 +31,7 @@ CPlayer2D::CPlayer2D(void)
 	, cInventoryManager(NULL)
 	, cInventoryItem(NULL)
 	, cSoundController(NULL)
+	, fullyCharged(false)
 {
 	// Initialise position of the player
 	vec2Position = glm::vec2(0);
@@ -126,10 +127,15 @@ bool CPlayer2D::Init(void)
 	// Add a Lives icon as one of the inventory items
 	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	//set initial max count as 0
+	cInventoryItem->setMaxCount(0);
 
 	// Add a Health icon as one of the inventory items
 	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	//starts without wedge so light bar is 0
+	//theres no set item count so using remove 100 instead -> i mean i could make it but i kind of lazy now
+	cInventoryItem->Remove(100);
 
 	// Get the handler to the CSoundController
 	cSoundController = CSoundController::GetInstance();
@@ -233,7 +239,7 @@ bool CPlayer2D::Update(const double dElapsedTime)
 	cInventoryItem = cInventoryManager->GetItem("Lives");
 
 	// Jump movement
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE)) //jumping only allowed when at least 1 tree is collected
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE))
 	{
 		// For jump
 		if (cPhysics2D.GetVerticalStatus() <= CPhysics2D::VERTICALSTATUS::IDLE)
@@ -242,14 +248,17 @@ bool CPlayer2D::Update(const double dElapsedTime)
 			cPhysics2D.SetInitialVelocity(vec2JumpSpeed);
 			cPhysics2D.SetNewJump(true);
 		}
-		// For double jump -> only can be done when there is at least 1 wedge
+		// For double jump -> only can be done when there is at least 1 wedge/ lives
 		else if (cPhysics2D.GetVerticalStatus() <= CPhysics2D::VERTICALSTATUS::FALL && cInventoryItem->GetCount() > 0)
 		{
 			cPhysics2D.SetVerticalStatus(CPhysics2D::VERTICALSTATUS::DOUBLEJUMP);
 			cPhysics2D.SetInitialVelocity(vec2JumpSpeed);
 			cPhysics2D.SetNewJump(true);
 			cInventoryItem->Remove(1);
-			fully_charged = false;
+			//set light bar to 0 to prevent other code from adding wedge
+			cInventoryItem = cInventoryManager->GetItem("Health");
+			cInventoryItem->Remove(100);
+			!fullyCharged;
 		}
 	}
 
@@ -359,11 +368,9 @@ bool CPlayer2D::Update(const double dElapsedTime)
 	InteractWithEnemy();
 
 	// Update the Health and Lives
-	UpdateHealthLives();
+	//UpdateHealthLives();
 
 	LightToWedge(); //update new wedge count first
-
-	Recharge(dElapsedTime);
 
 	//CS: Update the animated sprite
 	animatedSprites->Update(dElapsedTime);
@@ -447,6 +454,11 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem->Add(1);
 		// Play a bell sound
 		cSoundController->PlaySoundByID(1);
+		//fully recharge self when collect light child
+		cInventoryItem = cInventoryManager->GetItem("Lives");
+		cInventoryItem->Add(cInventoryItem->GetMaxCount());
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		cInventoryItem->Add(100);
 		break;
 	case 10:
 		// Erase the life from this position
@@ -456,22 +468,25 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem->Add(1);
 		break;
 	case 20:
+		//checking if player is fully charged or light bar cannot be depleted any more
+		
 		// Decrease the health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(2);
+		UpdateHealthLives();
 		break;
 	case 21:
 		// Increase the health
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Add(1);
-		if (fully_charged)
-			fully_charged = false;
+		Recharge();
 		break;
 	case 22:	//lighting candles
 		if (InteractKey())
 		{
 			cMap2D->SetMapInfo(iPositionY, iPositionX, 23);
 		}
+		break;
+	case 23:
+		Recharge();
 		break;
 	case 99:
 		// Level has been completed
@@ -487,7 +502,7 @@ void CPlayer2D::InteractWithMap(void)
 	->player run around collecting lights(now trees)
 	->when light(now tree) reaches max count, max count increases by 5
 */
-void CPlayer2D::LightToWedge(void)
+void CPlayer2D::LightToWedge(void) //has nothing to do with lives count reseting to 0 everytime bug
 {
 	cInventoryItem = cInventoryManager->GetItem("Tree");
 	if (cInventoryItem->GetCount() == cInventoryItem->GetMaxCount())
@@ -502,18 +517,17 @@ void CPlayer2D::LightToWedge(void)
 			//every time max number of tree achieved, add 5 to max count
 			cInventoryItem->setMaxCount(cInventoryItem->GetCount() + 5);
 		}
-		//everytime max count increases, add 1 life
+		//everytime max count increases, add 1 wedge to current number of wedges
 		cInventoryItem = cInventoryManager->GetItem("Lives");
-		cInventoryItem->setMaxCount(cInventoryItem->GetCount() + 1);
-		cInventoryItem->Add(1);
-
+		cInventoryItem->setMaxCount(cInventoryItem->GetMaxCount() + 1);
+		cInventoryItem->Add(1);	//this comes after setting new max count so it wont get added into the void [not show new wedge added]
 	}
 }
 
 /*
 	bit that adjusts rate of light level recharge
 */
-void CPlayer2D::Recharge(const double dt)
+void CPlayer2D::Recharge()
 {
 	//copy pasted bit ekekek
 	int iPositionX = 0;
@@ -541,22 +555,25 @@ void CPlayer2D::Recharge(const double dt)
 	default:
 		break;
 	}
+	//cInventoryItem = cInventoryManager->GetItem("Health");
+	if (cInventoryItem->GetCount() >= cInventoryItem->GetMaxCount() && !fullyCharged)
+	{ 
+		cInventoryItem->Remove(100);
 
-	//when item is still light (health), check if bar is fully filled before adding a wedge(life)
-	if (cInventoryItem->GetCount() == cInventoryItem->GetMaxCount())
-	{
-		cInventoryItem = cInventoryManager->GetItem("Lives");
+		cInventoryItem = cInventoryManager->GetItem("Lives"); 
 		//check if all wedge is available/charged -> will not run scope if all wedge available
 		if (cInventoryItem->GetCount() != cInventoryItem->GetMaxCount())
 		{
-			cInventoryItem->Add(1);
-			fully_charged = true; //wedges all available
+			cInventoryItem->Add(1); // add wedge
+			//if wedges still not fully charged, reset light bar to continue recharging
+			if (cInventoryItem->GetCount() == cInventoryItem->GetMaxCount())
+			{
+				fullyCharged;
+			}
 		}
-		else
-			cInventoryItem->Remove(100); //not all wedges fully charged -> recharging light bar from 0
 	}
-
 }
+
 /*
 	when enemy charge at player and reach player pos 
 	->player play rolling animation
@@ -616,11 +633,12 @@ void CPlayer2D::UpdateHealthLives(void)
 		// But we reduce the lives by 1.
 		cInventoryItem = cInventoryManager->GetItem("Lives");
 		cInventoryItem->Remove(1);
+		!fullyCharged;
 		// Check if there is no lives left...
 		if (cInventoryItem->GetCount() < 0)
 		{
 			// Player loses the game
-			CGameManager::GetInstance()->bPlayerLost = true;
+			//CGameManager::GetInstance()->bPlayerLost = true; //theres technically no death to this so commenting this out for now
 		}
 	}
 }

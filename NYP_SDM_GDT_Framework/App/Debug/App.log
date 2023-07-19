@@ -1,12 +1,132 @@
-﻿  EnemyAggro.cpp
-c1xx : fatal error C1083: Cannot open source file: 'EnemyAggro.cpp': No such file or directory
-  enemyPatrol.cpp
-c1xx : fatal error C1083: Cannot open source file: 'enemyPatrol.cpp': No such file or directory
-  Application.cpp
+﻿  Application.cpp
+  GameStateManager.cpp
+  IntroState.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
+  MenuState.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\GameStateManagement\MenuState.cpp(139,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\GameStateManagement\MenuState.cpp(138,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\GameStateManagement\MenuState.cpp(140,95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\GameStateManagement\MenuState.cpp(140,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+  PauseState.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\GameStateManagement\PauseState.cpp(100,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\GameStateManagement\PauseState.cpp(99,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\GameStateManagement\PauseState.cpp(101,95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\GameStateManagement\PauseState.cpp(101,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+  Play3DGameState.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
   PlayGameState.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
 C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
+  main.cpp
+  BackgroundEntity.cpp
   Enemy2D.cpp
   Enemy2DManager.cpp
+  GameManager.cpp
+  GUI_Scene2D.cpp
+  InventoryItem.cpp
+  InventoryManager.cpp
+  Map2D.cpp
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene2D\Map2D.cpp(907,36): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene2D\Map2D.cpp(907,24): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene2D\Map2D.cpp(908,36): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene2D\Map2D.cpp(908,23): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene2D\Map2D.cpp(960,41): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene2D\Map2D.cpp(960,26): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene2D\Map2D.cpp(1108,46): warning C4244: 'return': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene2D\Map2D.cpp(1138,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene2D\Map2D.cpp(1147,20): warning C4018: '<': signed/unsigned mismatch
+  Physics2D.cpp
+  Player2D.cpp
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene2D\Player2D.cpp(261,4): warning C4552: '!': result of expression not used
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene2D\Player2D.cpp(636,3): warning C4552: '!': result of expression not used
   Scene2D.cpp
+  FSM.cpp
   Generating Code...
+  Compiling...
+  Camera.cpp
+  BloodScreen.cpp
+  CameraEffects.cpp
+  CameraEffectsManager.cpp
+  CameraShake.cpp
+  CrossHair.cpp
+  ScopeScreen.cpp
+  Enemy3D.cpp
+  EntityManager.cpp
+  Hut_Concrete.cpp
+  Player3D.cpp
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene3D\Entities\Player3D.cpp(574,67): warning C4244: '+=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\App\Source\Scene3D\Entities\Player3D.cpp(592,67): warning C4244: '+=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  Rock3D.cpp
+  SolidObject.cpp
+  SolidObjectManager.cpp
+  Structure3D.cpp
+  TreeKabak3D.cpp
+  GUI_Scene3D.cpp
+  Minimap.cpp
+  Physics3D.cpp
+  Scene3D.cpp
+  Generating Code...
+  Compiling...
+  SceneNode.cpp
+  SpinTower.cpp
+  SkyBox.cpp
+  FrustumCulling.cpp
+  Grid.cpp
+  SpatialPartition.cpp
+  Terrain.cpp
+  TerrainManager.cpp
+  Texture.cpp
+  vertexBufferObject.cpp
+  Waypoint.cpp
+  WaypointManager.cpp
+  Pistol.cpp
+  Projectile.cpp
+  ProjectileManager.cpp
+  WeaponInfo.cpp
+  SoundController.cpp
+  SoundInfo.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  App.vcxproj -> C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\Debug\App.exe
