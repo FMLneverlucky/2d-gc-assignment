@@ -130,8 +130,6 @@ bool CEnemy2D::Update(const double dElapsedTime)
 
 	// Reset vec2MovementVelocity
 	vec2MovementVelocity = glm::vec2(0.0f);
-	//FROM THIS PART ON IS ORIGINAL AI CODE - DO NOT REMOVE BECAUSE FUCKING AROUND
-	/*
 	// Set the physics horizontal status to idle
 	cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::IDLE);
 
@@ -147,20 +145,17 @@ bool CEnemy2D::Update(const double dElapsedTime)
 		}
 		iFSMCounter++;
 		break;
-	case PATROL: //if player is on same tile level and in range(simulating enemy spots player) -> enemy switch to attack
+	case PATROL:
 		if (iFSMCounter > iMaxFSMCounter)
 		{
 			sCurrentFSM = IDLE;
 			iFSMCounter = 0;
 			cout << "Switching to Idle State" << endl;
 		}
-		else if (glm::distance(vec2Position, cPlayer2D->vec2Position) <= glm::length(vec2HalfSize) * 10.0f) //checking distance between player and enemy
+		else if (glm::distance(vec2Position, cPlayer2D->vec2Position) <= glm::length(vec2HalfSize) * 10.0f)
 		{
-			if (cPlayer2D->vec2Position.y == vec2Position.y || cPlayer2D->vec2Position.y == vec2Position.y + 1)//checking if player is on same tile level -> planning to make jump only 1 tile high
-			{
- 				sCurrentFSM = ATTACK;
-				iFSMCounter = 0;
-			}
+ 			sCurrentFSM = ATTACK;
+			iFSMCounter = 0;
 		}
 		else
 		{
@@ -170,7 +165,6 @@ bool CEnemy2D::Update(const double dElapsedTime)
 		}
 		iFSMCounter++;
 		break;
-		//add case aggro
 	case ATTACK:
 		if (glm::distance(vec2Position, cPlayer2D->vec2Position) <= glm::length(vec2HalfSize) * 10.0f)
 		{
@@ -241,8 +235,7 @@ bool CEnemy2D::Update(const double dElapsedTime)
 	default:
 		break;
 	}
-	*/
-	//dont delete yet, might need fall physics code
+
 	// Calculate the physics for JUMP/DOUBLE JUMP/FALL movement
 	if ((cPhysics2D.GetVerticalStatus() >= CPhysics2D::VERTICALSTATUS::JUMP)
 		&& (cPhysics2D.GetVerticalStatus() <= CPhysics2D::VERTICALSTATUS::FALL))
@@ -266,7 +259,7 @@ bool CEnemy2D::Update(const double dElapsedTime)
 	// Update vec2Position
 	glm::vec2 vec2NewPosition = vec2Position + vec2MovementVelocity * (float)dElapsedTime;
 
-	// Check for collision with the Tile Maps horizontally
+	// Check for collision with the Tile Maps vertically
 	if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::WALK)
 	{
 		// Check if the player walks into an obstacle
@@ -430,24 +423,16 @@ void CEnemy2D::PrintSelf(void)
 	cPhysics2D.PrintSelf();
 }
 
-void CEnemy2D::self_reposition()
-{
-}
-
 /**
  @brief Let enemy2D interact with the player.
  */
 bool CEnemy2D::InteractWithPlayer(void)
 {
-	if (glm::distance(vec2Position, cPlayer2D->vec2Position) <= glm::length(vec2HalfSize) * 1.0f)
+	// Check if the enemy2D is within 1 tile size of the player2D
+	if (glm::distance(vec2Position, cPlayer2D->vec2Position) <= glm::length(vec2HalfSize) * 2.0f)
 	{
 		cout << "Gotcha!" << endl;
 		// Since the player has been caught, then reset the FSM
-		if (vec2Direction.x < 0)
-			cPlayer2D->cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::KNOCKBACK_TO_LEFT);
-		if (vec2Direction.x > 0)
-			cPlayer2D->cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::KNOCKBACK_TO_RIGHT);
-
 		sCurrentFSM = IDLE;
 		iFSMCounter = 0;
 		return true;
@@ -485,10 +470,7 @@ void CEnemy2D::UpdatePosition(void)
 	if (vec2Direction.x < 0)
 	{
 		// Move left
-		vec2MovementVelocity.x -= vec2WalkSpeed.x; //movement velocity -> direction player move?
-		/*player spawns at spawn point taken from map.csv
-		negative x -> move left
-		positive x -> move right*/
+		vec2MovementVelocity.x -= vec2WalkSpeed.x;
 		if (cPhysics2D.GetHorizontalStatus() == CPhysics2D::HORIZONTALSTATUS::IDLE)
 			cPhysics2D.SetHorizontalStatus(CPhysics2D::HORIZONTALSTATUS::WALK);
 	}
@@ -505,8 +487,6 @@ void CEnemy2D::UpdatePosition(void)
 	}
 
 	// if the player is above the enemy2D, then jump to attack
-	//krabs cant jump so no need jump state
-	/*
 	if (vec2Direction.y > 0)
 	{
 		if (cPhysics2D.GetVerticalStatus() == CPhysics2D::VERTICALSTATUS::IDLE)
@@ -516,7 +496,6 @@ void CEnemy2D::UpdatePosition(void)
 			cPhysics2D.SetNewJump(true);
 		}
 	}
-	*/
 }
 
 

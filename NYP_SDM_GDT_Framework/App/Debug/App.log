@@ -1,2 +1,12 @@
-﻿  Player2D.cpp
-  App.vcxproj -> C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\Debug\App.exe
+﻿  EnemyAggro.cpp
+c1xx : fatal error C1083: Cannot open source file: 'EnemyAggro.cpp': No such file or directory
+  enemyPatrol.cpp
+c1xx : fatal error C1083: Cannot open source file: 'enemyPatrol.cpp': No such file or directory
+  Application.cpp
+  PlayGameState.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\jingj\OneDrive\Desktop\2d-gc-assignment\NYP_SDM_GDT_Framework\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
+  Enemy2D.cpp
+  Enemy2DManager.cpp
+  Scene2D.cpp
+  Generating Code...

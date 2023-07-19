@@ -26,9 +26,6 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
-//extension of enemy aggro state
-#include "EnemyAggro.h"
-
 class CEnemy2D : public CEntity2D
 {
 public:
@@ -43,9 +40,6 @@ public:
 
 	// Update
 	bool Update(const double dElapsedTime);
-
-	//EXPERIMENTAL VIRTUAL FACTORY UPDATE
-	virtual void upate(const double) = 0;
 
 	// PreRender
 	void PreRender(void);
@@ -65,9 +59,6 @@ public:
 	// PrintSelf
 	void PrintSelf(void);
 
-	//aggro state update
-	virtual void self_reposition() = 0; //overriding thing
-
 protected:
 	enum DIRECTION
 	{
@@ -82,8 +73,7 @@ protected:
 	{
 		IDLE = 0,
 		PATROL = 1,
-		AGGRO = 2,
-		ATTACK = 3,
+		ATTACK = 2,
 		NUM_FSM
 	};
 	
