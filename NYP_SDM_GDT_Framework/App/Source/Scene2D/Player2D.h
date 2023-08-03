@@ -133,5 +133,12 @@ protected:
 
 	// Update the health and lives
 	void UpdateHealthLives(void);
+
+	//check player wings status
+	bool fullcharge_status(void);
+
+	bool get_charge_status(void);
+
+	void meterToWedge(void);
 };
 
