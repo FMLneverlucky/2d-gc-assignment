@@ -14,3 +14,5 @@ to get wing wedges, player need to find light (trees) scattered around the map
 things that dont work yet:
 enemy knockback player
 getting first wedge -> wedge (life) count keeps having value bug(jumping between 0 and 1) -> player can perform infinite double jumps
+
+boo
