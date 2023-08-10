@@ -175,16 +175,6 @@ bool CEnemy2D::Update(const double dElapsedTime)
 			if ((cMap2D->GetTileIndexAtPosition(vec2Position, iStartX, iStartY) == true) &&
 				(cMap2D->GetTileIndexAtPosition(cPlayer2D->vec2Position, iTargetX, iTargetY) == true))
 			{
-				// Check if the enemy is at the centre of the column
-				// if not, then move to wards it first.
-				// Otherwise, do pathfinding
-				vec2Destination = glm::vec2(iStartX * cMap2D->GetTileSize().x + vec2HalfSize.x, iStartY * cMap2D->GetTileSize().y + vec2HalfSize.y);
-				if (abs(vec2Destination.x - vec2Position.x) > 0.05f /* Replace with CMap2D::vec2SizeTolerance.x */)
-				{
-					// Update the Enemy2D's position for attack
-					UpdatePosition();
-					break;
-				}
 
 				// Calculate a path to the player
 				auto path = cMap2D->PathFind(	glm::vec2(iStartX, iStartY), 
@@ -203,7 +193,7 @@ bool CEnemy2D::Update(const double dElapsedTime)
 					if (bFirstPosition == true)
 					{
 						// Set a destination
-						vec2Destination = glm::vec2(vec2PathPoint.x * cMap2D->GetTileHalfSize().x, vec2PathPoint.y * cMap2D->GetTileHalfSize().y);
+						vec2Destination = glm::vec2(vec2PathPoint.x * cMap2D->GetTileSize().x, vec2PathPoint.y * cMap2D->GetTileSize().y);
 						// Calculate the direction between enemy2D and this destination
 						vec2Direction = glm::normalize(vec2PathPoint - glm::vec2(iStartX, iStartY));
 						bFirstPosition = false;

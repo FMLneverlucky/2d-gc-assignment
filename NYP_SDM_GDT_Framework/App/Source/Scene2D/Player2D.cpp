@@ -537,48 +537,39 @@ void CPlayer2D::Recharge()
 
 	cInventoryItem = cInventoryManager->GetItem("Health");
 
-	if (get_charge_status() == false)
+	switch (cMap2D->GetMapInfo(iPositionY, iPositionX))
 	{
-		switch (cMap2D->GetMapInfo(iPositionY, iPositionX))
-		{
-		case 21:	//standing at a lamp -> recharge rate: medium
-		{
-			if (cInventoryItem->GetCount() < cInventoryItem->GetMaxCount())
-				cInventoryItem->Add(2);
-			break;
-		}
-		case 23:	//standing at candle -> recharge rate: low
-		{
-			if (cInventoryItem->GetCount() < cInventoryItem->GetMaxCount())
-				cInventoryItem->Add(1);
-			break;
-
-		}
-		default:
-			break;
-		}
+	case 21:	//standing at a lamp -> recharge rate: medium
+	{
+		if (cInventoryItem->GetCount() < cInventoryItem->GetMaxCount())
+			cInventoryItem->Add(2);
+		break;
 	}
-	else
-		return;
+	case 23:	//standing at candle -> recharge rate: low
+	{
+		if (cInventoryItem->GetCount() < cInventoryItem->GetMaxCount())
+			cInventoryItem->Add(1);
+		break;
 
-	//check if player is fully charged after undergoing recharge
-	if (get_charge_status() == false)
+	}
+	default:
+		break;
+	}
+	//cInventoryItem = cInventoryManager->GetItem("Health");
+	if (cInventoryItem->GetCount() >= cInventoryItem->GetMaxCount() && !fullyCharged)
 	{ 
+		cInventoryItem->Remove(100);
 
 		cInventoryItem = cInventoryManager->GetItem("Lives"); 
-		//increase wedge number and reset light meter
+		//check if all wedge is available/charged -> will not run scope if all wedge available
 		if (cInventoryItem->GetCount() != cInventoryItem->GetMaxCount())
 		{
-			cInventoryItem->Add(1);
-			cInventoryItem = cInventoryManager->GetItem("Health");
-			cInventoryItem->Remove(100);
-			
-			/*
+			cInventoryItem->Add(1); // add wedge
+			//if wedges still not fully charged, reset light bar to continue recharging
 			if (cInventoryItem->GetCount() == cInventoryItem->GetMaxCount())
 			{
 				fullyCharged;
 			}
-			*/
 		}
 	}
 }
@@ -642,7 +633,7 @@ void CPlayer2D::UpdateHealthLives(void)
 		// But we reduce the lives by 1.
 		cInventoryItem = cInventoryManager->GetItem("Lives");
 		cInventoryItem->Remove(1);
-		fullcharge_status();
+		!fullyCharged;
 		// Check if there is no lives left...
 		if (cInventoryItem->GetCount() < 0)
 		{
@@ -650,30 +641,4 @@ void CPlayer2D::UpdateHealthLives(void)
 			//CGameManager::GetInstance()->bPlayerLost = true; //theres technically no death to this so commenting this out for now
 		}
 	}
-}
-
-/*
-returns true if wedges and light meter (lives and health) is full
-*/
-bool CPlayer2D::fullcharge_status(void)
-{
-	cInventoryItem = cInventoryManager->GetItem("Lives");
-	if (cInventoryItem->GetCount() != cInventoryItem->GetMaxCount())
-		return false;
-	cInventoryItem = cInventoryManager->GetItem("Health");
-	if (cInventoryItem->GetCount() != cInventoryItem->GetMaxCount())
-		return false;
-
-	//if able to run through previous code without going in to return false, player is fully charged
-	return true;
-}
-
-bool CPlayer2D::get_charge_status(void)
-{
-	return fullcharge_status();
-}
-
-void CPlayer2D::meterToWedge(void)
-{
-	cInventoryItem = cInventoryManager->GetItem("Health");
 }
