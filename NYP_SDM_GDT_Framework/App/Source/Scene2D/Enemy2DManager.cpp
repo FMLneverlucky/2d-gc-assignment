@@ -56,7 +56,7 @@ bool CEnemy2DManager::Init(void)
 	// Create the instances of CEnemy2D* and store them in the vector
 	for (unsigned int i = 0; i < uiTotalElements; i++)
 	{
-		vEnemy2D.push_back(new CEnemy2D());
+		vEnemy2D.push_back(new CEnemy2D());	//this remains same as framework because handling enemy types here is complicated 
 	}
 	return true;
 }
@@ -66,12 +66,26 @@ bool CEnemy2DManager::Init(void)
  @param vec3Position A const glm::vec3 variable containing the source position of the cEnemy2D
  @return A bool variable which is true if the CEnemy2D was activated successfully, otherwise false.
  */
-bool CEnemy2DManager::Activate(glm::vec2 vec2Position, int& uiIndex)
+bool CEnemy2DManager::Activate(glm::vec2 vec2Position, int& uiIndex, int enemy_type)
 {
 	// Since a cEnemy2D has been added, we activate the next element in the vector
 	vEnemy2D[uiIndexLast]->vec2Position = vec2Position;
-	if (vEnemy2D[uiIndexLast]->Init() == false)
-		return false;
+	//since all enemy is enemy2d class objects (push back in manager init), handle change of enemy class here?  (since going through class init [get texture] after this line)
+	switch (enemy_type)
+	{
+	case 0: //enemy2d
+	{
+		if (vEnemy2D[uiIndexLast]->Init() == false)
+			return false;
+		break;	
+	}
+	case 1:	//krab
+	{
+		//cant set to null because position is defined above unless shift this entire switch to top
+		vEnemy2D[uiIndexLast];
+	}
+
+	}
 	vEnemy2D[uiIndexLast]->SetShader(sShaderName);
 
 	// Increase the uiIndexLast by 1 since a cEnemy2D is going to be added
@@ -80,7 +94,8 @@ bool CEnemy2DManager::Activate(glm::vec2 vec2Position, int& uiIndex)
 	else
 		uiIndexLast++;
 
-	uiIndex = uiIndexLast;
+	uiIndex = uiIndexLast;	//passed in index value used to tie iteration of enemy to tile by address value (head empty, cant think of a better way to phrase at the moment yes)
+	//replace address with current iteration of enemy address
 
 	return true;
 }

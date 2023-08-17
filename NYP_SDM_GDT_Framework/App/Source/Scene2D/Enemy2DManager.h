@@ -31,7 +31,7 @@ public:
 	bool Init(void);
 
 	// Activate a CEnemy2D* to this class instance
-	virtual bool Activate(glm::vec2 vec2Position, int& uiIndex);
+	virtual bool Activate(glm::vec2 vec2Position, int& uiIndex, int enemy_type);
 	// Deactivate a CEnemy2D* from this class instance
 	virtual bool Deactivate(const unsigned int iIndex);
 
@@ -50,10 +50,18 @@ public:
 	// PrintSelf
 	virtual void PrintSelf(void);
 
-	// List of CEnemy2D
-	std::vector<CEnemy2D*> vEnemy2D;
+	// List of Enemies **IMPORTANT: DO NOT MAKE ANOTHER PLAYER (nothings going to happen but anyways)**
+	std::vector<CEntity2D*> vEnemy2D;
 
 protected:
+	//making a enum so manager can handle diff enemy class cases
+	enum TYPE
+	{
+		DEFAULT = 0,
+		KRAB = 1,
+		SHRIMP = 2,
+		NUM_TYPE
+	};
 	// Name of Shader Program instance
 	std::string sShaderName;
 

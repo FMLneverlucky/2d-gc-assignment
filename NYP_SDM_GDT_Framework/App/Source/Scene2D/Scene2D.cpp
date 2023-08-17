@@ -142,16 +142,54 @@ bool CScene2D::Init(void)
 		unsigned int uiRow = -1;
 		unsigned int uiCol = -1;
 		if (cMap2D->FindValue(300, uiRow, uiCol) == false)
-			break;	// Stop this loop since there are no more enemies in this map
+			break;	
 
 		// Erase the value of the player in the arrMapInfo
 		cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
 		int uiIndex = -1;
 		if (cEnemy2DManager->Activate(glm::vec2(uiCol * cMap2D->GetTileSize().x + cMap2D->GetTileHalfSize().x,
-												uiRow * cMap2D->GetTileSize().y + cMap2D->GetTileHalfSize().y), uiIndex) == false)
+												uiRow * cMap2D->GetTileSize().y + cMap2D->GetTileHalfSize().y), uiIndex, 0) == false)
 		{
 			cout << "Unable to activate an Enemy2D at [" << uiRow << ", " << uiCol << "]" << endl;
+		}
+	}
+	// Create and initialise krab enemy
+	while (true)
+	{
+		// Find the indices for the enemies in arrMapInfo, and assign it to cEnemy2D
+		unsigned int uiRow = -1;
+		unsigned int uiCol = -1;
+		if (cMap2D->FindValue(301, uiRow, uiCol) == false)
+			break;	
+
+		// Erase the value of the player in the arrMapInfo
+		cMap2D->SetMapInfo(uiRow, uiCol, 0);
+
+		int uiIndex = -1;
+		if (cEnemy2DManager->Activate(glm::vec2(uiCol * cMap2D->GetTileSize().x + cMap2D->GetTileHalfSize().x,
+												uiRow * cMap2D->GetTileSize().y + cMap2D->GetTileHalfSize().y), uiIndex, 1) == false)
+		{
+			cout << "Unable to activate a krab at [" << uiRow << ", " << uiCol << "]" << endl;
+		}
+	}
+	// Create and initialise shrimp enemy
+	while (true)
+	{
+		// Find the indices for the enemies in arrMapInfo, and assign it to cEnemy2D
+		unsigned int uiRow = -1;
+		unsigned int uiCol = -1;
+		if (cMap2D->FindValue(302, uiRow, uiCol) == false)
+			break;	
+
+		// Erase the value of the player in the arrMapInfo
+		cMap2D->SetMapInfo(uiRow, uiCol, 0);
+
+		int uiIndex = -1;
+		if (cEnemy2DManager->Activate(glm::vec2(uiCol * cMap2D->GetTileSize().x + cMap2D->GetTileHalfSize().x,
+												uiRow * cMap2D->GetTileSize().y + cMap2D->GetTileHalfSize().y), uiIndex, 2) == false)
+		{
+			cout << "Unable to activate a shrimp at [" << uiRow << ", " << uiCol << "]" << endl;
 		}
 	}
 
