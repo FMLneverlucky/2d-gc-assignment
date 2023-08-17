@@ -1,10 +1,10 @@
 /**
- CEnemy2D
+ CEnemyKrab
  @brief A class which represents the enemy object
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "Enemy2D.h"
+#include "EnemyKrab.h"
 
 #include <iostream>
 using namespace std;
@@ -28,7 +28,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-CEnemy2D::CEnemy2D(void)
+CEnemyKrab::CEnemyKrab(void)
 	: bIsActive(false)
 	, vec2Destination(glm::vec2(0, 0))
 	, vec2Direction(glm::vec2(0, 0))
@@ -45,7 +45,7 @@ CEnemy2D::CEnemy2D(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CEnemy2D::~CEnemy2D(void)
+CEnemyKrab::~CEnemyKrab(void)
 {
 	// Delete the quadMesh
 	if (p2DMesh)
@@ -70,7 +70,7 @@ CEnemy2D::~CEnemy2D(void)
   @brief Initialise this instance
   @return true is the initialisation is successful, otherwise false
   */
-bool CEnemy2D::Init(void)
+bool CEnemyKrab::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -100,7 +100,7 @@ bool CEnemy2D::Init(void)
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_EnemyTile.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_EnemyTile.tga" << endl;
+		cout << "Unable to load Image/Krab_tile.tga" << endl;
 		return false;
 	}
 
@@ -123,7 +123,7 @@ bool CEnemy2D::Init(void)
  @param dElapsedTime A const double variable contains the time since the last frame
  @return A bool variable to indicate this method successfully completed its tasks
  */
-bool CEnemy2D::Update(const double dElapsedTime)
+bool CEnemyKrab::Update(const double dElapsedTime)
 {
 	if (!bIsActive)
 		return false;
@@ -341,7 +341,7 @@ bool CEnemy2D::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void CEnemy2D::PreRender(void)
+void CEnemyKrab::PreRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -360,7 +360,7 @@ void CEnemy2D::PreRender(void)
 /**
  @brief Render this instance
  */
-void CEnemy2D::Render(void)
+void CEnemyKrab::Render(void)
 {
 	if (!bIsActive)
 		return;
@@ -395,7 +395,7 @@ void CEnemy2D::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CEnemy2D::PostRender(void)
+void CEnemyKrab::PostRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -408,7 +408,7 @@ void CEnemy2D::PostRender(void)
  @brief Set the handle to cPlayer to this class instance
  @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
  */
-void CEnemy2D::SetPlayer2D(CPlayer2D* cPlayer2D)
+void CEnemyKrab::SetPlayer2D(CPlayer2D* cPlayer2D)
 {
 	this->cPlayer2D = cPlayer2D;
 
@@ -419,7 +419,7 @@ void CEnemy2D::SetPlayer2D(CPlayer2D* cPlayer2D)
 /**
  @brief PrintSelf
  */ 
-void CEnemy2D::PrintSelf(void)
+void CEnemyKrab::PrintSelf(void)
 {
 	cout << "CEnemy2D::PrintSelf()" << endl;
 	cout << "=======================" << endl;
@@ -436,7 +436,7 @@ void CEnemy2D::PrintSelf(void)
 /**
  @brief Let enemy2D interact with the player.
  */
-bool CEnemy2D::InteractWithPlayer(void)
+bool CEnemyKrab::InteractWithPlayer(void)
 {
 	// Check if the enemy2D is within 1 tile size of the player2D
 	if (glm::distance(vec2Position, cPlayer2D->vec2Position) <= glm::length(vec2HalfSize) * 2.0f)
@@ -454,7 +454,7 @@ bool CEnemy2D::InteractWithPlayer(void)
 /**
  @brief Update the enemy's direction.
  */
-void CEnemy2D::UpdateDirection(void)
+void CEnemyKrab::UpdateDirection(void)
 {
 	// Set the destination to the player
 	vec2Destination = cPlayer2D->vec2Position;
@@ -466,7 +466,7 @@ void CEnemy2D::UpdateDirection(void)
 /**
  @brief Flip horizontal direction. For patrol use only
  */
-void CEnemy2D::FlipHorizontalDirection(void)
+void CEnemyKrab::FlipHorizontalDirection(void)
 {
 	vec2Direction.x *= -1;
 }
@@ -474,7 +474,7 @@ void CEnemy2D::FlipHorizontalDirection(void)
 /**
 @brief Update position.
 */
-void CEnemy2D::UpdatePosition(void)
+void CEnemyKrab::UpdatePosition(void)
 {
 	// If the player is to the left of the enemy2D, then move to the left
 	if (vec2Direction.x < 0)
@@ -512,7 +512,7 @@ void CEnemy2D::UpdatePosition(void)
 /**
 @brief Calculate Direction using coordinates, not indices
 */
-glm::vec2 CEnemy2D::CalculateDirection(const glm::vec2 vec2StartPosition, const glm::vec2 vec2EndPosition)
+glm::vec2 CEnemyKrab::CalculateDirection(const glm::vec2 vec2StartPosition, const glm::vec2 vec2EndPosition)
 {
 	int iStartPositionX = 0;
 	int iStartPositionY = 0;

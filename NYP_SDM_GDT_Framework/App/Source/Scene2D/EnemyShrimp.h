@@ -1,5 +1,5 @@
 /**
- CEnemy2D
+ CEnemyShrimp
  @brief A class which represents the enemy object
  By: Toh Da Jun
  Date: Mar 2020
@@ -26,14 +26,14 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
-class CEnemy2D : public CEntity2D
+class CEnemyShrimp : public CEntity2D
 {
 public:
 	// Constructor
-	CEnemy2D(void);
+	CEnemyShrimp(void);
 
 	// Destructor
-	virtual ~CEnemy2D(void);
+	virtual ~CEnemyShrimp(void);
 
 	// Init
 	bool Init(void);

@@ -26,14 +26,14 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
-class CEnemy2D : public CEntity2D
+class CEnemyKrab : public CEntity2D
 {
 public:
 	// Constructor
-	CEnemy2D(void);
+	CEnemyKrab(void);
 
 	// Destructor
-	virtual ~CEnemy2D(void);
+	virtual ~CEnemyKrab(void);
 
 	// Init
 	bool Init(void);

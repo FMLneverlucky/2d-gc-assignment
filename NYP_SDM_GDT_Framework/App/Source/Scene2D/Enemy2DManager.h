@@ -11,6 +11,9 @@
 // Include Enemy2D
 #include "Enemy2D.h"
 
+#include"EnemyKrab.h"
+#include "EnemyShrimp.h"
+
 // Include GLM
 #include <includes/glm.hpp>
 #include <includes/gtc/matrix_transform.hpp>
@@ -51,7 +54,7 @@ public:
 	virtual void PrintSelf(void);
 
 	// List of Enemies **IMPORTANT: DO NOT MAKE ANOTHER PLAYER (nothings going to happen but anyways)**
-	std::vector<CEntity2D*> vEnemy2D;
+	std::vector<CEntity2D> vEnemy2D;
 
 protected:
 	//making a enum so manager can handle diff enemy class cases
