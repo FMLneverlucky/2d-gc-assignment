@@ -56,7 +56,8 @@ bool CEnemy2DManager::Init(void)
 	// Create the instances of CEnemy2D* and store them in the vector
 	for (unsigned int i = 0; i < uiTotalElements; i++)
 	{
-		vEnemy2D.push_back(new CEnemy2D());	//this remains same as framework because handling enemy types here is complicated 
+		CEntity2D* pointer_to_enemy;
+		vEnemy2D.push_back(pointer_to_enemy);	//this remains same as framework because handling enemy types here is complicated 
 	}
 	return true;
 }
@@ -68,24 +69,39 @@ bool CEnemy2DManager::Init(void)
  */
 bool CEnemy2DManager::Activate(glm::vec2 vec2Position, int& uiIndex, int enemy_type)
 {
-	// Since a cEnemy2D has been added, we activate the next element in the vector
-	vEnemy2D[uiIndexLast]->vec2Position = vec2Position;
 	//since all enemy is enemy2d class objects (push back in manager init), handle change of enemy class here?  (since going through class init [get texture] after this line)
 	switch (enemy_type)
 	{
 	case 0: //enemy2d
-	{
-		if (vEnemy2D[uiIndexLast]->Init() == false)
-			return false;
-		break;	
-	}
+		{
+		
+			vEnemy2D[uiIndexLast] = new CEnemy2D();
+			//create new class object -> toss address of new object into placeholder?
+			break;	
+		}
 	case 1:	//krab
-	{
-		//cant set to null because position is defined above unless shift this entire switch to top
-		vEnemy2D[uiIndexLast];
+		{
+			vEnemy2D[uiIndexLast] = new CEnemyKrab(); //CEnemyKrab() <- linker error, have no idea why
+			//i did scuffed fix referencing from the saviour website stackoverflow and included krab/shrimp files to be compiled in .vcxproj
+			break;
+		}
+	case 2:	//shrimp
+		{
+			vEnemy2D[uiIndexLast] = new CEnemyShrimp(); //CEnemyShrimp() <- linking error LNK2019, have no idea why
+			//eyeballing error output msg, guessing theres problem with this function being virtual and trying to access non virtual function [class::class()], even though enemy2d can run properly with same code O-|-<
+			break;
+		}
+	default:
+		{
+			vEnemy2D[uiIndexLast] = new CEnemy2D();
+			break;
+		}
 	}
+	// Since a cEnemy2D has been added, we activate the next element in the vector
+	vEnemy2D[uiIndexLast]->vec2Position = vec2Position;
+	if (vEnemy2D[uiIndexLast]->Init() == false)	//if done properly, should go to respective class init (unlike whatever i was doing before it got deleted)
+		return false;
 
-	}
 	vEnemy2D[uiIndexLast]->SetShader(sShaderName);
 
 	// Increase the uiIndexLast by 1 since a cEnemy2D is going to be added
@@ -213,7 +229,7 @@ void CEnemy2DManager::PrintSelf(void)
 	for (unsigned int i = 0; i < vEnemy2D.size(); i++)
 	{
 		cout << i << "\t: ";
-		vEnemy2D[i]->PrintSelf();
+		//vEnemy2D[i]->PrintSelf();
 	}
 	cout << "===============================" << endl;
 }

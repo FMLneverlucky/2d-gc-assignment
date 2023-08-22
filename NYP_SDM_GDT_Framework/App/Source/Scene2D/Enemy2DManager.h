@@ -53,8 +53,8 @@ public:
 	// PrintSelf
 	virtual void PrintSelf(void);
 
-	// List of Enemies **IMPORTANT: DO NOT MAKE ANOTHER PLAYER (nothings going to happen but anyways)**
-	std::vector<CEntity2D> vEnemy2D;
+	
+	std::vector<CEntity2D*> vEnemy2D;
 
 protected:
 	//making a enum so manager can handle diff enemy class cases

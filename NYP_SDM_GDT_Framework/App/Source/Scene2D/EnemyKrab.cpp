@@ -97,7 +97,7 @@ bool CEnemyKrab::Init(void)
 	p2DMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), 1, 1);
 
 	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_EnemyTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Krab_tile.tga", true);
 	if (iTextureID == 0)
 	{
 		cout << "Unable to load Image/Krab_tile.tga" << endl;
